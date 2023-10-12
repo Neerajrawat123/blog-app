@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, styled } from '@mui/system';
 import { TextField, Button, Typography } from '@mui/material';
+import { API } from '../../services/api';
 
 const Container = styled(Box)`
   width: 480px;
@@ -44,16 +45,54 @@ const SignUpButton = styled(Button)`
   border-radius: 2px;
   box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
 `;
+const Error = styled(Typography)`
+    font-size: 10px;
+    color: #ff6161;
+    line-height: 0;
+    margin-top: 30px;
+    padding-left:150px;
+    font-weight: 600;
+`
+
+const signupInitialValues = {
+  email: '',
+  name: '',
+  password: '',
+};
+
 
 function SignUp() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  const[error, setError] = useState('')
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [username, setUsername] = useState('');
+  const [account,setAccount] = useState(signupInitialValues)
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
+    try {
+      
+      let response=  await API.userSignup(account)
+      if (response.isSuccess) {
+       setAccount(signupInitialValues)
+       setError('')
+       navigate("/login")
+       
+      } 
+      
+      
+    } catch (error) {
+      setError('something in wrong! please try again')
+
+      
+    }
   };
+
+  const onInputChange = (e) => {
+  setAccount({ ...account, [e.target.name]: e.target.value });
+}
+
 
   
   const imageURL =
@@ -63,28 +102,33 @@ function SignUp() {
     <Container>
       <Box>
         <Image src={imageURL} />
+        {error && <Error>{error}</Error>}
 
         <Wrapper>
           <TextField
             id='standard-basic'
-            label='username'
-            variant='standard'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
-            id='standard-basic'
             label='userid'
             variant='standard'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            name='email'
+            // value={email}
+            onChange={(e) => onInputChange(e)}
+            
+            
+            />
+          <TextField
+            id='standard-basic'
+            label='username'
+            variant='standard'
+            name='name'
+            // value={username}
+            onChange={(e) => onInputChange(e)}        />
           <TextField
             id='standard-basic'
             label='password'
             variant='standard'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name='password'
+            // value={password}
+            onChange={(e) => onInputChange(e)}
           />
 
           <LoginButton

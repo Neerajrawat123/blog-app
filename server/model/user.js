@@ -1,15 +1,14 @@
 import mongoose, { Schema, model } from 'mongoose'
 
 const userSchema = new Schema({
-    name:{
+    email:{
         type:String,
         required: true
 
     },
-    username :{
+    name :{
         type:String,
         required: true,
-        unique:true
 
     },
     password:{
@@ -19,6 +18,6 @@ const userSchema = new Schema({
     },
 })
 
-const User = model('user', userSchema)
+const User = model('User', userSchema)
 
 export default User
