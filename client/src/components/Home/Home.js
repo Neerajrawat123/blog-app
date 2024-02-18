@@ -1,6 +1,6 @@
 import {useContext} from 'react'
 import {Grid} from '@mui/material'
-import { DataContext } from '../../context/dataProvider'
+import { DataContext } from '../../context/DataProvider'
 import Banner from '../Banner/Banner'
 import Categories from './Categories'
 import Posts from './post/Posts'

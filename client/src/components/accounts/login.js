@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, styled } from '@mui/system';
 import { TextField, Button, Typography } from '@mui/material';
 import { API } from '../../services/api';
-import { DataContext } from '../../context/dataProvider';
+import { DataContext } from '../../context/DataProvider';
 
 
 const Container = styled(Box)`

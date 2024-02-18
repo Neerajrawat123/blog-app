@@ -25,4 +25,12 @@ export const service_URL ={
     userSignup:{ url:'/sign-up', method:'POST'},
     userLogin:{url:'/login',method:'POST'},
     createPost :{url:'/create',method:'POST'},
-    getAllPosts: { url: '/posts', method: 'GET', params: true },}
+    getAllPosts: { url: '/posts', method: 'GET', params: true },
+    getPostById: {url:'/post', method: 'GET', query: true},
+    updatePost: {url:'/update', method: 'PUT', query: true},
+    deletePost: {url: '/delete', method: 'DELETE', query: true},
+    getAllComments: {url: '/comments', method: 'GET', query: true},
+    postComment: {url: '/post/comment', method: 'POST'},
+    deleteComment: {url: 'delete/comment', method: 'DELETE', query: true},
+
+}

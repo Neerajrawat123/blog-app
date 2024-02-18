@@ -11,15 +11,16 @@ import { Box } from '@mui/material';
 import Login from './components/accounts/login';
 import './App.css';
 import SignUp from './components/accounts/signup';
-import DataProvider from './context/dataProvider';
+import DataProvider from './context/DataProvider';
 import Home from './components/Home/Home';
 import Header from './components/Header/Header';
 import { useState } from 'react';
 import CreatePost from './components/create/CreatePost';
+import DetailView from './components/detail/detailView';
+import Update from './components/create/update';
 
 const ProtectedRoute = ({ isUserAuthenticated, ...props }) => {
   const token = sessionStorage.getItem('accessToken');
-  console.log(token);
   return token && isUserAuthenticated ? (
     <>
       <Header />
@@ -31,7 +32,6 @@ const ProtectedRoute = ({ isUserAuthenticated, ...props }) => {
 };
 function App() {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-  console.log('user', isUserAuthenticated);
 
   return (
     <div className='App'>
@@ -61,6 +61,27 @@ function App() {
               >
                 <Route path='/create' element={<CreatePost />} />
               </Route>
+
+              <Route
+                path='/update/:id'
+                element={
+                  <ProtectedRoute isUserAuthenticated={isUserAuthenticated} />
+                }
+              >
+                <Route path='/update/:id' element={<Update />} />
+              </Route>
+
+              <Route
+                path='/details/:id'
+                element={
+                  <ProtectedRoute isUserAuthenticated={isUserAuthenticated} />
+                }
+              >
+                <Route path='/details/:id' element={<DetailView />} />
+              </Route>
+
+
+
 
               <Route path='/sign-up' element={<SignUp />} />
             </Routes>

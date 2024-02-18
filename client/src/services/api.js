@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { notificationsURl, service_URL } from '../constants/config';
+import { getType } from '../utils/util';
 
 const URL = 'http://localhost:8000';
 
@@ -13,8 +14,13 @@ const axiosInstance = axios.create({
 
 
  axiosInstance.interceptors.request.use(
-    function(config){
-        return config
+    function(config) {
+        if (config.TYPE.params) {
+            config.params = config.TYPE.params
+        } else if (config.TYPE.query) {
+            config.url = config.url + '/' + config.TYPE.query;
+        }
+        return config;
     },
     function(error){
         return Promise.reject(error)
@@ -32,8 +38,8 @@ const axiosInstance = axios.create({
  )
 
  const processResponse =(response) =>{
-    if (response?.status ===200) {
-        return {isSuccess : true , data : response.data}
+    if (response?.status === 200) {
+        return { isSuccess : true , data : response.data }
         
     } else {
         return{
@@ -83,8 +89,16 @@ const axiosInstance = axios.create({
     API[key] = (body,showUploadProgress, showDownloadProgress) => 
     axiosInstance({
         method:value.method,
+        transformRequest: [function (data, headers) {
+            if(data === 'null'){
+                data = null
+            }
+        
+            return data;
+          }],
+        
         url:value.url,
-        data:body,
+        data: value.method === "DELETE" ? null : body ,
         responseType:value.responseType,
           onUploadProgress: function(progressEvent) {
             if (showUploadProgress) {
@@ -92,12 +106,14 @@ const axiosInstance = axios.create({
                 showUploadProgress(percentCompleted);
             }
         },
+        TYPE:getType(value, body),
         onDownloadProgress: function(progressEvent) {
             if (showDownloadProgress) {
                 let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                 showDownloadProgress(percentCompleted);
             }}
     })
+
     
  }
 

@@ -3,7 +3,7 @@ import {Box,styled,FormControl, InputBase,TextareaAutosize,Button} from '@mui/ma
 import { AddCircle as Add } from '@mui/icons-material';
 import { API } from '../../services/api';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { DataContext } from '../../context/dataProvider';
+import { DataContext } from '../../context/DataProvider';
 const Container = styled(Box)(({ theme }) => ({
   margin: '63px 100px',
   [theme.breakpoints.down('md')]: {
@@ -46,7 +46,7 @@ const initialPost = {
   description: '',
   picture: '',
   username: '',
-  categories: '',
+  categories: [],
   createdDate: new Date()
 }
 
@@ -60,14 +60,12 @@ function CreatePost() {
 
 useEffect(() => {
   
-// post.categories = lo
  post.categories = location.search?.split('=')[1] || 'All';
-post.username = account.username
+ post.username = account.username
 }, [file])
 
   const savePost = async() =>{
     await API.createPost(post);
-    console.log('yes')
     navigate('/')
   }
   const handleChange = (e) => {

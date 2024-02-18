@@ -9,14 +9,17 @@ import Token from '../model/Token.js';
 dotenv.config()
 
 export const SignUpUser = async (req, res) => {
+  const {email, name, password} = req.body
   try {
+    if(!email && !name && !password){
+      throw new Error()
+    }
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const user = {
-        email: req.body.email,
-        name: req.body.name,
-      password: hashedPassword,
+      email,
+      name,
+      hashedPassword
     };
-    console.log(user);
 
     const newUser = new User(user);
     await newUser.save();
@@ -29,7 +32,8 @@ export const SignUpUser = async (req, res) => {
 };
 
 export const loginUser = async (req,res) =>{
-    const user = await User.findOne({email:req.body.email})
+  const {email, password} = req.body;
+    const user = await User.findOne({email})
     
     if (!user) {
         return res.status(400).json({msg:'username is not exist'})
@@ -37,14 +41,13 @@ export const loginUser = async (req,res) =>{
     }
     
     try {
-        let match = await bcrypt.compare(req.body.password,user.password)
+        let match = await bcrypt.compare(password,user.password)
         if (match) {
             const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_KEY, {expiresIn : '15m'})
             const refreshToken = jwt.sign(user.toJSON(), process.env.REFRESH_KEY)
             
             const newToken = new Token({token:refreshToken})
             await newToken.save()
-            console.log(user)
 
             res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken,name: user.name, username: user.email})
 
