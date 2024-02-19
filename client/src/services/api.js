@@ -89,16 +89,16 @@ const axiosInstance = axios.create({
     API[key] = (body,showUploadProgress, showDownloadProgress) => 
     axiosInstance({
         method:value.method,
-        transformRequest: [function (data, headers) {
-            if(data === 'null'){
-                data = null
-            }
+        // transformRequest: [function (data, headers) {
+        //     if(headers. === 'DELETE'){
+        //         data = null
+        //     }
         
-            return data;
-          }],
+        //     return data;
+        //   }],
         
         url:value.url,
-        data: value.method === "DELETE" ? null : body ,
+        data: value.method === 'DELETE' ? '' : body,
         responseType:value.responseType,
           onUploadProgress: function(progressEvent) {
             if (showUploadProgress) {

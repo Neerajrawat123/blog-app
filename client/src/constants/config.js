@@ -21,7 +21,7 @@ export const notificationsURl = {
     }
 }
 
-export const service_URL ={
+export const service_URL = {
     userSignup:{ url:'/sign-up', method:'POST'},
     userLogin:{url:'/login',method:'POST'},
     createPost :{url:'/create',method:'POST'},
